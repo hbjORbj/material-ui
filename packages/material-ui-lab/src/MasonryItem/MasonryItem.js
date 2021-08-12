@@ -77,16 +77,18 @@ const MasonryItem = React.forwardRef(function MasonryItem(inProps, ref) {
   const masonryItemRef = React.useRef(null);
 
   const { spacing = 1 } = React.useContext(MasonryContext);
-  const { children, className, component = 'div', columnSpan = 1, height, ...other } = props;
-  const isSSR = height !== undefined;
+  const { children, className, component = 'div', columnSpan = 1, defaultHeight, ...other } = props;
+  const isSSR = defaultHeight !== undefined;
 
-  const [styleProps, setStyleProps] = React.useState({
+  const [height, setHeight] = React.useState(defaultHeight);
+
+  const styleProps = {
     ...props,
     isSSR,
     spacing,
     columnSpan,
     height: height < 0 ? 0 : height, // MasonryItems to which negative or zero height is passed will be hidden
-  });
+  };
 
   const classes = useUtilityClasses(styleProps);
 
@@ -100,11 +102,8 @@ const MasonryItem = React.forwardRef(function MasonryItem(inProps, ref) {
       masonryItemRef.current.firstChild.src = `${src}?${new Date().getTime()}`;
     };
     const resizeObserver = new ResizeObserver(([item]) => {
-      if (styleProps.height !== item.contentRect.height) {
-        setStyleProps({
-          ...styleProps,
-          height: item.contentRect.height,
-        });
+      if (height !== item.contentRect.height) {
+        setHeight(item.contentRect.height);
       }
     });
     const item = masonryItemRef.current.firstChild;
@@ -114,25 +113,7 @@ const MasonryItem = React.forwardRef(function MasonryItem(inProps, ref) {
       resizeObserver.unobserve(item);
       item.removeEventListener('error', handleImageLoadError);
     };
-  }, [isSSR, styleProps]);
-
-  React.useEffect(() => {
-    // handle responsiveness to `height` prop in case of SSR masonry
-    if (isSSR && height !== styleProps.height) {
-      setStyleProps({
-        ...styleProps,
-        height: height < 0 ? 0 : height,
-      });
-    }
-    // re-style if `spacing` updates
-    if (spacing !== styleProps.spacing) {
-      setStyleProps({ ...styleProps, spacing });
-    }
-    // re-style if `columnSpan` updates
-    if (columnSpan !== styleProps.columnSpan) {
-      setStyleProps({ ...styleProps, columnSpan });
-    }
-  }, [isSSR, height, spacing, columnSpan, styleProps]);
+  }, [isSSR, height]);
 
   const handleRef = useForkRef(ref, masonryItemRef);
   return (
@@ -176,9 +157,9 @@ MasonryItem.propTypes /* remove-proptypes */ = {
    */
   component: PropTypes.elementType,
   /**
-   * The height of the component in px. This is provided for server-side rendering.
+   * The initial height of the component in px. This is provided for server-side rendering.
    */
-  height: PropTypes.number,
+  defaultHeight: PropTypes.number,
   /**
    * Allows defining system overrides as well as additional CSS styles.
    */
