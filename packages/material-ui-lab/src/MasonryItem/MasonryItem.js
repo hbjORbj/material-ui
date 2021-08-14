@@ -8,7 +8,10 @@ import {
   unstable_resolveBreakpointValues as resolveBreakpointValues,
 } from '@material-ui/system';
 import { unstable_useForkRef as useForkRef } from '@material-ui/utils';
-import { unstable_composeClasses as composeClasses } from '@material-ui/unstyled';
+import {
+  unstable_composeClasses as composeClasses,
+  unstable_useResizeObserver as useResizeObserver,
+} from '@material-ui/unstyled';
 import { styled, useThemeProps } from '@material-ui/core/styles';
 import { getMasonryItemUtilityClass } from './masonryItemClasses';
 import MasonryContext from '../Masonry/MasonryContext';
@@ -89,23 +92,22 @@ const MasonryItem = React.forwardRef(function MasonryItem(inProps, ref) {
     columnSpan,
     height: height < 0 ? 0 : height, // MasonryItems to which negative or zero height is passed will be hidden
   };
+  const [rect, resizeRef] = useResizeObserver();
 
   const classes = useUtilityClasses(styleProps);
-
   React.useEffect(() => {
     // do not create a resize observer in case of SSR masonry
     if (isSSR) {
       return () => {};
     }
-    const resizeObserver = new ResizeObserver(([item]) => {
-      setHeight(item.contentRect.height);
-    });
-    const item = masonryItemRef.current.firstChild;
-    resizeObserver.observe(item);
-    return () => {
-      resizeObserver.unobserve(item);
-    };
-  }, [isSSR]);
+    if (!rect && masonryItemRef.current?.firstChild) {
+      resizeRef(masonryItemRef.current?.firstChild);
+    }
+    if (rect?.height !== height) {
+      setHeight(rect.height);
+    }
+    return () => {};
+  }, [isSSR, height, rect, resizeRef]);
 
   const handleRef = useForkRef(ref, masonryItemRef);
   return (
