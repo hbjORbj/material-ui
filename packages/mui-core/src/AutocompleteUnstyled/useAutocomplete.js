@@ -693,6 +693,7 @@ export default function useAutocomplete(props) {
   };
 
   const handleClear = (event) => {
+    event.stopPropagation();
     ignoreFocus.current = true;
     setInputValueState('');
 
@@ -915,6 +916,7 @@ export default function useAutocomplete(props) {
   };
 
   const handlePopupIndicator = (event) => {
+    event.stopPropagation();
     if (open) {
       handleClose(event, 'toggleInput');
     } else {
@@ -1027,11 +1029,11 @@ export default function useAutocomplete(props) {
     }),
     getClearProps: () => ({
       tabIndex: -1,
-      onClick: handleClear,
+      onMouseDown: handleClear,
     }),
     getPopupIndicatorProps: () => ({
       tabIndex: -1,
-      onClick: handlePopupIndicator,
+      onMouseDown: handlePopupIndicator,
     }),
     getTagProps: ({ index }) => ({
       key: index,
