@@ -2060,14 +2060,14 @@ describe('Joy <Autocomplete />', () => {
     expect(handleSubmit.callCount).to.equal(1);
   });
 
-  describe('prop: componentsProps', () => {
+  describe('prop: slotProps', () => {
     it('should apply the props on the AutocompleteClearIndicator component', () => {
       render(
         <Autocomplete
           open
           options={['one', 'two']}
           value="one"
-          componentsProps={{
+          slotProps={{
             clearIndicator: {
               // @ts-ignore
               'data-testid': 'clearIndicator',
@@ -2086,7 +2086,7 @@ describe('Joy <Autocomplete />', () => {
         <Autocomplete
           open
           options={['one', 'two']}
-          componentsProps={{
+          slotProps={{
             popupIndicator: {
               // @ts-ignore
               'data-testid': 'popupIndicator',
@@ -2105,7 +2105,7 @@ describe('Joy <Autocomplete />', () => {
       render(
         <Autocomplete
           options={['one', 'two']}
-          componentsProps={{
+          slotProps={{
             listbox: {
               // @ts-ignore
               'data-testid': 'popperRoot',
