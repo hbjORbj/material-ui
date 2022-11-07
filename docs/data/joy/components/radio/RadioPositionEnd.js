@@ -30,7 +30,7 @@ export default function RadioPositionEnd() {
               value={item}
               label={item}
               sx={{ flexGrow: 1, flexDirection: 'row-reverse' }}
-              componentsProps={{
+              slotProps={{
                 action: ({ checked }) => ({
                   sx: (theme) => ({
                     ...(checked && {

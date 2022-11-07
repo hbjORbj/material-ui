@@ -53,7 +53,7 @@ export default function ExampleButtonCheckbox() {
                 setValue((val) => val.filter((text) => text !== item));
               }
             }}
-            componentsProps={{
+            slotProps={{
               action: ({ checked }) => ({
                 sx: {
                   bgcolor: checked ? 'background.surface' : 'transparent',

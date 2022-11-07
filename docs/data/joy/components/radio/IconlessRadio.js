@@ -33,7 +33,7 @@ export default function IconlessRadio() {
               overlay
               disableIcon
               value={value}
-              componentsProps={{
+              slotProps={{
                 label: ({ checked }) => ({
                   sx: {
                     fontWeight: 'lg',
