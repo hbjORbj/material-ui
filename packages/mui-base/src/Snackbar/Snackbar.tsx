@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { OverridableComponent } from '@mui/types';
+import { PolymorphicComponent } from '../utils/PolymorphicComponent';
 import ClickAwayListener from '../ClickAwayListener';
 import {
   SnackbarOwnerState,
@@ -40,7 +40,6 @@ const Snackbar = React.forwardRef(function Snackbar<RootComponentType extends Re
   const {
     autoHideDuration = null,
     children,
-    component,
     disableWindowBlurListener = false,
     exited = true,
     onBlur,
@@ -68,7 +67,7 @@ const Snackbar = React.forwardRef(function Snackbar<RootComponentType extends Re
 
   const ownerState: SnackbarOwnerState = props;
 
-  const Root = component || slots.root || 'div';
+  const Root = slots.root || 'div';
 
   const rootProps: WithOptionalOwnerState<SnackbarRootSlotProps> = useSlotProps({
     elementType: Root,
@@ -106,7 +105,7 @@ const Snackbar = React.forwardRef(function Snackbar<RootComponentType extends Re
       <Root {...rootProps}>{children}</Root>
     </ClickAwayListener>
   );
-}) as OverridableComponent<SnackbarTypeMap>;
+}) as PolymorphicComponent<SnackbarTypeMap>;
 
 Snackbar.propTypes /* remove-proptypes */ = {
   // ----------------------------- Warning --------------------------------
@@ -126,11 +125,6 @@ Snackbar.propTypes /* remove-proptypes */ = {
    */
   children: PropTypes.node,
   /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
-  /**
    * If `true`, the `autoHideDuration` timer will expire even if the window is not focused.
    * @default false
    */
@@ -140,10 +134,6 @@ Snackbar.propTypes /* remove-proptypes */ = {
    * @default true
    */
   exited: PropTypes.bool,
-  /**
-   * @ignore
-   */
-  onBlur: PropTypes.func,
   /**
    * Callback fired when the component requests to be closed.
    * Typically `onClose` is used to set state in the parent component,
@@ -155,18 +145,6 @@ Snackbar.propTypes /* remove-proptypes */ = {
    * @param {string} reason Can be: `"timeout"` (`autoHideDuration` expired), `"clickaway"`, or `"escapeKeyDown"`.
    */
   onClose: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onFocus: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onMouseEnter: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onMouseLeave: PropTypes.func,
   /**
    * If `true`, the component is shown.
    */

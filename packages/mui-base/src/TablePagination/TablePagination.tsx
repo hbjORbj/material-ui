@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { unstable_useId as useId, chainPropTypes, integerPropType } from '@mui/utils';
-import { OverridableComponent } from '@mui/types';
+import { PolymorphicComponent } from '../utils/PolymorphicComponent';
 import { useSlotProps, WithOptionalOwnerState } from '../utils';
 import composeClasses from '../composeClasses';
 import isHostComponent from '../utils/isHostComponent';
@@ -63,7 +63,6 @@ const TablePagination = React.forwardRef(function TablePagination<
   RootComponentType extends React.ElementType,
 >(props: TablePaginationProps<RootComponentType>, forwardedRef: React.ForwardedRef<Element>) {
   const {
-    component,
     colSpan: colSpanProp,
     count,
     getItemAriaLabel = defaultGetAriaLabel,
@@ -99,7 +98,7 @@ const TablePagination = React.forwardRef(function TablePagination<
   const selectId = useId(selectIdProp);
   const labelId = useId(labelIdProp);
 
-  const Root = component ?? slots.root ?? 'td';
+  const Root = slots.root ?? 'td';
   const rootProps: WithOptionalOwnerState<TablePaginationRootSlotProps> = useSlotProps({
     elementType: Root,
     externalSlotProps: slotProps.root,
@@ -237,7 +236,7 @@ const TablePagination = React.forwardRef(function TablePagination<
       </Toolbar>
     </Root>
   );
-}) as OverridableComponent<TablePaginationTypeMap>;
+}) as PolymorphicComponent<TablePaginationTypeMap>;
 
 TablePagination.propTypes /* remove-proptypes */ = {
   // ----------------------------- Warning --------------------------------
@@ -247,16 +246,7 @@ TablePagination.propTypes /* remove-proptypes */ = {
   /**
    * @ignore
    */
-  children: PropTypes.node,
-  /**
-   * @ignore
-   */
   colSpan: PropTypes.number,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
   /**
    * The total number of rows.
    *
@@ -358,7 +348,37 @@ TablePagination.propTypes /* remove-proptypes */ = {
    * @default {}
    */
   slotProps: PropTypes.shape({
-    actions: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    actions: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.shape({
+        count: PropTypes.number,
+        direction: PropTypes.oneOf(['ltr', 'rtl']),
+        getItemAriaLabel: PropTypes.func,
+        onPageChange: PropTypes.func,
+        page: PropTypes.number,
+        rowsPerPage: PropTypes.number,
+        showFirstButton: PropTypes.bool,
+        showLastButton: PropTypes.bool,
+        slotProps: PropTypes.shape({
+          backButton: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+          firstButton: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+          lastButton: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+          nextButton: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+          root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+        }),
+        slots: PropTypes.shape({
+          backButton: PropTypes.elementType,
+          backPageIcon: PropTypes.elementType,
+          firstButton: PropTypes.elementType,
+          firstPageIcon: PropTypes.elementType,
+          lastButton: PropTypes.elementType,
+          lastPageIcon: PropTypes.elementType,
+          nextButton: PropTypes.elementType,
+          nextPageIcon: PropTypes.elementType,
+          root: PropTypes.elementType,
+        }),
+      }),
+    ]),
     displayedRows: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
     menuItem: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
     root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),

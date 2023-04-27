@@ -64,6 +64,7 @@ describe('<Tab />', () => {
       },
     },
     skip: [
+      'componentProp',
       'reactTestRenderer', // Need to be wrapped with TabsContext
     ],
   }));

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { OverridableComponent } from '@mui/types';
+import { PolymorphicComponent } from '../utils/PolymorphicComponent';
 import { useSlotProps, WithOptionalOwnerState } from '../utils';
 import composeClasses from '../composeClasses';
 import { getTabPanelUtilityClass } from './tabPanelClasses';
@@ -36,7 +36,7 @@ const TabPanel = React.forwardRef(function TabPanel<RootComponentType extends Re
   props: TabPanelProps<RootComponentType>,
   forwardedRef: React.ForwardedRef<Element>,
 ) {
-  const { children, component, value, slotProps = {}, slots = {}, ...other } = props;
+  const { children, value, slotProps = {}, slots = {}, ...other } = props;
 
   const { hidden, getRootProps } = useTabPanel(props);
 
@@ -47,7 +47,7 @@ const TabPanel = React.forwardRef(function TabPanel<RootComponentType extends Re
 
   const classes = useUtilityClasses(ownerState);
 
-  const TabPanelRoot: React.ElementType = component ?? slots.root ?? 'div';
+  const TabPanelRoot: React.ElementType = slots.root ?? 'div';
   const tabPanelRootProps: WithOptionalOwnerState<TabPanelRootSlotProps> = useSlotProps({
     elementType: TabPanelRoot,
     getSlotProps: getRootProps,
@@ -62,7 +62,7 @@ const TabPanel = React.forwardRef(function TabPanel<RootComponentType extends Re
   });
 
   return <TabPanelRoot {...tabPanelRootProps}>{!hidden && children}</TabPanelRoot>;
-}) as OverridableComponent<TabPanelTypeMap>;
+}) as PolymorphicComponent<TabPanelTypeMap>;
 
 TabPanel.propTypes /* remove-proptypes */ = {
   // ----------------------------- Warning --------------------------------
@@ -73,11 +73,6 @@ TabPanel.propTypes /* remove-proptypes */ = {
    * The content of the component.
    */
   children: PropTypes.node,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
   /**
    * The props used for each slot inside the TabPanel.
    * @default {}
