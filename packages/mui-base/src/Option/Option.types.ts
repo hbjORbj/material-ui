@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DefaultComponentProps, Simplify } from '@mui/types';
+import { Simplify } from '@mui/types';
 import { UseOptionRootSlotProps } from '../useOption';
 import { PolymorphicProps, SlotComponentProps } from '../utils';
 
@@ -59,13 +59,13 @@ export type OptionProps<
   RootComponentType extends React.ElementType = OptionTypeMap<OptionValue>['defaultComponent'],
 > = PolymorphicProps<OptionTypeMap<OptionValue, {}, RootComponentType>, RootComponentType>;
 
-export interface OptionType {
+export type OptionType = {
   <OptionValue, RootComponentType extends React.ElementType>(
     props: PolymorphicProps<OptionTypeMap<OptionValue>, RootComponentType>,
   ): JSX.Element | null;
-  <OptionValue>(props: DefaultComponentProps<OptionTypeMap<OptionValue>>): JSX.Element | null;
   propTypes?: any;
-}
+  displayName?: string | undefined;
+};
 
 export type OptionOwnerState<OptionValue> = Simplify<
   OptionOwnProps<OptionValue> & {
