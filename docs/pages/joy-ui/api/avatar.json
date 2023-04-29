@@ -73,6 +73,7 @@
     "classes": [
       "colorContext",
       "colorDanger",
+      "colorDefault",
       "colorInfo",
       "colorNeutral",
       "colorPrimary",

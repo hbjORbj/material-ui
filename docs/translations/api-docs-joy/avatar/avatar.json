@@ -15,6 +15,11 @@
   },
   "classDescriptions": {
     "root": { "description": "Class name applied to the root element." },
+    "colorDefault": {
+      "description": "Styles applied to {{nodeName}} if {{conditions}}.",
+      "nodeName": "the root element",
+      "conditions": "<code>color=\"default\"</code>"
+    },
     "colorPrimary": {
       "description": "Class name applied to {{nodeName}} if {{conditions}}.",
       "nodeName": "the root element",

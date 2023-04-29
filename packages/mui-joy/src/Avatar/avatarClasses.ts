@@ -3,6 +3,8 @@ import { generateUtilityClass, generateUtilityClasses } from '../className';
 export interface AvatarClasses {
   /** Class name applied to the root element. */
   root: string;
+  /** Styles applied to the root element if `color="default"`. */
+  colorDefault: string;
   /** Class name applied to the root element if `color="primary"`. */
   colorPrimary: string;
   /** Class name applied to the root element if `color="neutral"`. */
@@ -43,6 +45,7 @@ export function getAvatarUtilityClass(slot: string): string {
 
 const avatarClasses: AvatarClasses = generateUtilityClasses('MuiAvatar', [
   'root',
+  'colorDefault',
   'colorPrimary',
   'colorNeutral',
   'colorDanger',
