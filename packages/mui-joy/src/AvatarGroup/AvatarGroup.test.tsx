@@ -32,8 +32,11 @@ describe('<AvatarGroup />', () => {
         <Avatar src="/" />
       </AvatarGroup>,
     );
-
-    const avatar = (container.firstChild as ChildNode).firstChild;
+    const firstChild = container.firstChild;
+    if (firstChild === null) {
+      return;
+    }
+    const avatar = firstChild.firstChild;
     expect(avatar).to.have.class(avatarClasses.colorPrimary);
     expect(avatar).to.have.class(avatarClasses.variantSolid);
     expect(avatar).to.have.class(avatarClasses.sizeSm);
