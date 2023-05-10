@@ -10,12 +10,13 @@ import {
 import { unstable_composeClasses as composeClasses } from '@mui/base';
 import { styled, useThemeProps } from '../styles';
 import { getRadioGroupUtilityClass } from './radioGroupClasses';
-import { RadioGroupOwnerState, RadioGroupTypeMap } from './RadioGroupProps';
+import { RadioGroupOwnerState, RadioGroupTypeMap, RadioGroupProps } from './RadioGroupProps';
 import RadioGroupContext from './RadioGroupContext';
 import FormControlContext from '../FormControl/FormControlContext';
 import useSlot from '../utils/useSlot';
 
 const useUtilityClasses = (ownerState: RadioGroupOwnerState) => {
+  const x: RadioGroupProps['value'] = x;
   const { orientation, size, variant, color } = ownerState;
   const slots = {
     root: [
